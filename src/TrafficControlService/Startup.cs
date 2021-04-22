@@ -28,8 +28,7 @@ namespace TrafficControlService
                 new DefaultSpeedingViolationCalculator("A12", 10, 100, 5));
 
             services.AddHttpClient();
-
-            services.AddSingleton<IVehicleStateRepository, InMemoryVehicleStateRepository>();
+            services.AddSingleton<IVehicleStateRepository, DaprVehicleStateRepository>();
 
             services.AddControllers();
         }
