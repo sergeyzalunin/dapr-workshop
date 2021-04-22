@@ -96,7 +96,7 @@ namespace TrafficControlService.Controllers
 
                     // publish speedingviolation
                     var message = JsonContent.Create<SpeedingViolation>(speedingViolation);
-                    await _httpClient.PostAsync("http://localhost:6001/collectfine", message);
+                    await _httpClient.PostAsync("http://localhost:3600/v1.0/publish/pubsub/collectfine", message);
                 }
 
                 return Ok();

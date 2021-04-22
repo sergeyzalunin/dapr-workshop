@@ -35,8 +35,17 @@ namespace FineCollectionService.Controllers
 
         [Route("collectfine")]
         [HttpPost()]
-        public async Task<ActionResult> CollectFine(SpeedingViolation speedingViolation)
+        public async Task<ActionResult> CollectFine([FromBody] System.Text.Json.JsonDocument cloudevent)
         {
+            var data = cloudevent.RootElement.GetProperty("data");
+            var speedingViolation = new SpeedingViolation
+            {
+                VehicleId = data.GetProperty("vehicleId").GetString(),
+                RoadId = data.GetProperty("roadId").GetString(),
+                Timestamp = data.GetProperty("timestamp").GetDateTime(),
+                ViolationInKmh = data.GetProperty("violationInKmh").GetInt32()
+            };
+            
             decimal fine = _fineCalculator.CalculateFine(_fineCalculatorLicenseKey, speedingViolation.ViolationInKmh);
 
             // get owner info
@@ -55,6 +64,21 @@ namespace FineCollectionService.Controllers
             // TODO
 
             return Ok();
+        }
+        
+        [Route("/dapr/subscribe")]
+        [HttpGet()]
+        public object Subscribe()
+        {
+            return new object[]
+            {
+                new
+                {
+                    pubsubname = "pubsub",
+                    topic = "collectfine",
+                    route = "/collectfine"
+                }
+            };
         }
     }
 }
