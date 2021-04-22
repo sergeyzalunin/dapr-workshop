@@ -20,6 +20,10 @@ namespace TrafficControlService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDaprClient(builder => builder
+                .UseHttpEndpoint($"http://localhost:3600")
+                .UseGrpcEndpoint($"http://localhost:60000"));
+            
             services.AddSingleton<ISpeedingViolationCalculator>(
                 new DefaultSpeedingViolationCalculator("A12", 10, 100, 5));
 
