@@ -5,4 +5,8 @@
     <TargetFramework>netcoreapp5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="System.Net.Mqtt" Version="0.6.14-beta" />
+  </ItemGroup>
+
 </Project>
